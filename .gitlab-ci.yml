@@ -1,0 +1,10 @@
+build_image:
+  image: docker:git
+  services:
+  - docker:dind
+  script:
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+    - docker build -t registry.gitlab.com/bencoder01/payword-frontend .
+    - docker push registry.gitlab.com/bencoder01/payword-frontend:latest
+  only:
+    - master
