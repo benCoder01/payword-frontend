@@ -98,7 +98,7 @@ class SignIn extends React.Component {
             <FormControl margin="normal" required fullWidth>
               <InputLabel htmlFor="username">Username</InputLabel>
               <Input
-                type="username"
+                type="text"
                 id="username"
                 name="username"
                 value={this.state.username}
