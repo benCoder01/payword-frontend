@@ -142,7 +142,20 @@ class SignUp extends React.Component {
                 )}
               </Grid>
               <Grid item>
-                <Typography variant="subtitle1">A number</Typography>
+                <Typography variant="subtitle1">At least one number</Typography>
+              </Grid>
+            </Grid>
+
+            <Grid container>
+              <Grid item>
+                {this.state.passwordOne.match(/([a-zA-Z])/) ? (
+                  <DoneIcon className={classes.doneIcon} />
+                ) : (
+                  <ClearIcon className={classes.clearIcon} />
+                )}
+              </Grid>
+              <Grid item>
+                <Typography variant="subtitle1">At least one letter</Typography>
               </Grid>
             </Grid>
 
@@ -174,7 +187,8 @@ class SignUp extends React.Component {
                 this.state.passwordOne === "" ||
                 !this.state.passwordOne.match(/(?=.*\d)/) ||
                 this.state.passwordOne.length < 8 ||
-                this.state.passwordOne.length > 300
+                this.state.passwordOne.length > 300 ||
+                !this.state.passwordOne.match(/([a-zA-Z])/)
               }
             >
               Sign up
