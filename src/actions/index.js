@@ -29,7 +29,7 @@ export const signIn = (username, password) => {
     dispatch({
       type: FETCH_USER_TOKEN_BEGIN
     });
-    fetch("http://" + document.location.hostname + "/api/users/sign-in", {
+    fetch("https://" + document.location.hostname + "/api/users/sign-in", {
       method: "post",
       headers: {
         Accept: "application/json",
@@ -70,7 +70,7 @@ export const signUp = (username, password) => {
     dispatch({
       type: FETCH_SIGN_UP_BEGIN
     });
-    fetch("http://" + document.location.hostname + "/api/users/sign-up", {
+    fetch("https://" + document.location.hostname + "/api/users/sign-up", {
       method: "post",
       headers: {
         Accept: "application/json",
@@ -151,7 +151,7 @@ export const fetchGames = (username, token) => {
       type: FETCH_GAMES_BEGIN
     });
     fetch(
-      "http://" + document.location.hostname + "/api/games/user/" + username,
+      "https://" + document.location.hostname + "/api/games/user/" + username,
       {
         method: "get",
         headers: {
@@ -188,7 +188,7 @@ export const fetchGame = (gamename, token) => {
     dispatch({
       type: FETCH_GAME_BEGIN
     });
-    fetch("http://" + document.location.hostname + "/api/games/" + gamename, {
+    fetch("https://" + document.location.hostname + "/api/games/" + gamename, {
       method: "get",
       headers: {
         Accept: "application/json",
@@ -237,7 +237,7 @@ export const createNewGame = (gamename, username, token) => {
     dispatch({
       type: FETCH_CREATE_GAME_BEGIN
     });
-    fetch("http://" + document.location.hostname + "/api/games/create", {
+    fetch("https://" + document.location.hostname + "/api/games/create", {
       method: "post",
       headers: {
         Accept: "application/json",
@@ -278,7 +278,7 @@ export const subscribeToGame = (gamename, username, token) => {
     dispatch({
       type: FETCH_SUBSCRIBE_GAME_BEGIN
     });
-    fetch("http://" + document.location.hostname + "/api/games/enter", {
+    fetch("https://" + document.location.hostname + "/api/games/enter", {
       method: "post",
       headers: {
         Accept: "application/json",
@@ -319,7 +319,7 @@ export const unsubscribeFromGame = (gamename, username, token) => {
     dispatch({
       type: FETCH_UNSUBSCRIBE_GAME_BEGIN
     });
-    fetch("http://" + document.location.hostname + "/api/games/leave", {
+    fetch("https://" + document.location.hostname + "/api/games/leave", {
       method: "post",
       headers: {
         Accept: "application/json",
@@ -361,7 +361,7 @@ export const addCategory = (categoryname, gamename, token) => {
     dispatch({
       type: FETCH_ADD_CATEGORY_GAME_BEGIN
     });
-    fetch("http://" + document.location.hostname + "/api/games/category/add", {
+    fetch("https://" + document.location.hostname + "/api/games/category/add", {
       method: "post",
       headers: {
         Accept: "application/json",
@@ -400,7 +400,7 @@ export const removeCategory = (categoryname, gamename, token) => {
     dispatch({
       type: FETCH_REMOVE_CATEGORY_GAME_BEGIN
     });
-    fetch("http://" + document.location.hostname + "/api/games/category/remove", {
+    fetch("https://" + document.location.hostname + "/api/games/category/remove", {
       method: "post",
       headers: {
         Accept: "application/json",
@@ -439,7 +439,7 @@ export const increment = (username, categoryname, gamename, token) => {
     dispatch({
       type: FETCH_INCREMENT_BEGIN
     });
-    fetch("http://" + document.location.hostname + "/api/games/increment", {
+    fetch("https://" + document.location.hostname + "/api/games/increment", {
       method: "post",
       headers: {
         Accept: "application/json",
@@ -479,7 +479,7 @@ export const decrement = (username, categoryname, gamename, token) => {
     dispatch({
       type: FETCH_DECREMENT_BEGIN
     });
-    fetch("http://" + document.location.hostname + "/api/games/decrement", {
+    fetch("https://" + document.location.hostname + "/api/games/decrement", {
       method: "post",
       headers: {
         Accept: "application/json",
