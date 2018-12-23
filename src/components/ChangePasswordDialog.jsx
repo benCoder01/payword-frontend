@@ -35,7 +35,7 @@ export default class ChangPasswordDialog extends React.Component {
 
 
     const response = await fetch(
-      "https://" + document.location.hostname + "/api/users/change-password",
+      "https://payword.benediktricken.de/api/users/change-password",
       {
         method: "post",
         headers: {
