@@ -112,7 +112,10 @@ class Header extends React.Component {
                   <MenuItem
                     component={Link}
                     to="/sign-in"
-                    onClick={() => this.props.handleLogout()}
+                    onClick={() => {
+                      this.handleClose();
+                      this.props.handleLogout();
+                    }}
                   >
                     Logout
                   </MenuItem>
