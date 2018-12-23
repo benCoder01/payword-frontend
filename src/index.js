@@ -8,6 +8,7 @@ import { createStore, applyMiddleware } from 'redux'
 import rootReducer from './reducers'
 import {BrowserRouter as Router} from "react-router-dom"
 import thunk from "redux-thunk";
+import * as Sentry from '@sentry/browser';
 
 const store = createStore(rootReducer, applyMiddleware(thunk))
 
@@ -31,7 +32,9 @@ const theme = createMuiTheme({
 });
 
 
-
+Sentry.init({
+ dsn: "https://725e629f55594c8c8fd7ffe3e3797a54@sentry.io/1359349"
+});
 
 ReactDOM.render(
     <Provider store={store}>
