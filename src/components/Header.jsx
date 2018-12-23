@@ -34,7 +34,7 @@ const styles = {
 
 class Header extends React.Component {
   state = {
-    anchorEl: null,
+    anchorEl: null
   };
 
   handleMenu = event => {
@@ -73,7 +73,13 @@ class Header extends React.Component {
             >
               <ArrowBackIcon />
             </IconButton>
-            <Typography variant="h6" color="inherit" className={classes.grow}>
+            <Typography
+              variant="h6"
+              color="inherit"
+              className={classes.grow}
+              component={Link}
+              to={"/"}
+            >
               Payword
             </Typography>
             {this.props.authenticated && (
@@ -103,22 +109,23 @@ class Header extends React.Component {
                   open={open}
                   onClose={this.handleClose}
                 >
-                  <MenuItem 
-                    component={Link} to="/sign-in"
-
-                    onClick={() => this.props.handleLogout()}>
+                  <MenuItem
+                    component={Link}
+                    to="/sign-in"
+                    onClick={() => this.props.handleLogout()}
+                  >
                     Logout
                   </MenuItem>
                   <MenuItem
                     onClick={this.handleClose}
-                    component={Link} to="/user-settings"
+                    component={Link}
+                    to="/user-settings"
                   >
                     Account Settings
                   </MenuItem>
                 </Menu>
               </div>
             )}
-
           </Toolbar>
         </AppBar>
       </div>
