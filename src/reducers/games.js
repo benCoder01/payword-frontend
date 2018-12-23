@@ -222,7 +222,8 @@ const games = (state = initalState, action) => {
       return {
         ingame: false,
         games: [],
-        game: {}
+        game: {},
+        errorMessage: ""
       };
     case CLOSE_ERROR_MESSAGE: {
       return {
