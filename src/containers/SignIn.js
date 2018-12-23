@@ -3,7 +3,8 @@ import { signIn} from "../actions";
 import SignIn from "../components/SignIn";
 
 const mapStateToProps = state => ({
-  errorMessage: state.users.errorMessage
+  errorMessage: state.users.errorMessage,
+  authenticated: state.users.authenticated
 });
 
 const mapDispatchToProps = dispatch => ({

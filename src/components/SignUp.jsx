@@ -11,7 +11,7 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Grid from "@material-ui/core/Grid";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import PasswordInput from "./PasswordInput";
 import DoneIcon from "@material-ui/icons/Done";
 import ClearIcon from "@material-ui/icons/Clear";
@@ -90,7 +90,9 @@ class SignUp extends React.Component {
 
   render() {
     const { classes } = this.props;
-
+    if (this.props.authenticated) {
+      return (<Redirect push to={"/games"}/>)
+    }
     return (
       <main className={classes.main}>
         <CssBaseline />

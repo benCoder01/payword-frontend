@@ -10,7 +10,7 @@ import LockIcon from "@material-ui/icons/LockOutlined";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
-import { Link } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import PasswordInput from "./PasswordInput";
 
 const styles = theme => ({
@@ -64,11 +64,10 @@ class SignIn extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  async handleSubmit(event) {
-    event.preventDefault();    // avoid reloading
-    
-    this.props.handleSignIn(this.state.username, this.state.password)
+  handleSubmit(event) {
+    event.preventDefault(); // avoid reloading
 
+    this.props.handleSignIn(this.state.username, this.state.password);
   }
 
   handleChange = prop => event => {
@@ -79,7 +78,10 @@ class SignIn extends React.Component {
 
   render() {
     const { classes } = this.props;
-
+    if (this.props.authenticated) {
+      return (<Redirect push to={"/games"}/>)
+    }
+    
     return (
       <main className={classes.main}>
         <CssBaseline />

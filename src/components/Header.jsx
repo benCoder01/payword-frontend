@@ -9,7 +9,7 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import Refresh from "@material-ui/icons/Refresh";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
-import { Redirect, Switch } from "react-router";
+import { Link } from "react-router-dom";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 
 const styles = {
@@ -35,7 +35,6 @@ const styles = {
 class Header extends React.Component {
   state = {
     anchorEl: null,
-    userSettings: false
   };
 
   handleMenu = event => {
@@ -52,10 +51,6 @@ class Header extends React.Component {
     } else {
       this.props.handleFetchGames(this.props.username, this.props.token);
     }
-  };
-
-  handleUserSettings = () => {
-    this.setState({ userSettings: !this.state.userSettings });
   };
 
   handleGoBack = () => {
@@ -108,11 +103,15 @@ class Header extends React.Component {
                   open={open}
                   onClose={this.handleClose}
                 >
-                  <MenuItem onClick={() => this.props.handleLogout()}>
+                  <MenuItem 
+                    component={Link} to="/sign-in"
+
+                    onClick={() => this.props.handleLogout()}>
                     Logout
                   </MenuItem>
                   <MenuItem
-                    onClick={this.handleClose && this.handleUserSettings}
+                    onClick={this.handleClose}
+                    component={Link} to="/user-settings"
                   >
                     Account Settings
                   </MenuItem>
@@ -120,11 +119,6 @@ class Header extends React.Component {
               </div>
             )}
 
-            {this.state.userSettings && (
-              <Switch>
-                <Redirect push to={"/user-settings"} />
-              </Switch>
-            )}
           </Toolbar>
         </AppBar>
       </div>
