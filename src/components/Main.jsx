@@ -5,6 +5,8 @@ import UserSettings from "../containers/UserSettings";
 import Game from "../containers/Game";
 import AdminControl from "../containers/AdminControl";
 import SignUp from "../containers/SignUp";
+import About from "./About";
+import Privacy from "./Privacy";
 
 import { Route, Switch } from "react-router-dom";
 
@@ -19,14 +21,12 @@ class Main extends Component {
   render() {
     return (
       <div>
-        {!this.props.authenticated && (
-          <div>
-            <Switch>
-              <Route path="/sign-in" component={SignIn} />
-              <Route path="/sign-up" component={SignUp} />
-            </Switch>
-          </div>
-        )}
+        <Switch>
+          <Route path="/sign-in" component={SignIn} />
+          <Route path="/sign-up" component={SignUp} />
+          <Route path="/about" component={About} />
+          <Route path="/privacy" component={Privacy} />
+        </Switch>
 
         {this.props.authenticated && (
           <div>
@@ -44,8 +44,6 @@ class Main extends Component {
                 />
               )}
             </Switch>
-
-            
           </div>
         )}
       </div>

@@ -3,7 +3,9 @@ import { signUp } from "../actions";
 import SignUp from "../components/SignUp";
 
 const mapStateToProps = state => ({
-  errorMessage: state.users.errorMessage
+  errorMessage: state.users.errorMessage,
+  authenticated: state.users.authenticated
+
 });
 
 const mapDispatchToProps = dispatch => ({
