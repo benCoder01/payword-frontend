@@ -1,41 +1,18 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
 import { Link } from "react-router-dom";
-import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
+import { Typography } from "@material-ui/core";
 
 const styles = theme => ({
-  text: {
-    paddingTop: theme.spacing.unit * 2,
-    paddingLeft: theme.spacing.unit * 2,
-    paddingRight: theme.spacing.unit * 2
-  },
-  paper: {
-    paddingBottom: 50
-  },
-  list: {
-    marginBottom: theme.spacing.unit * 2
-  },
-  subHeader: {
-    backgroundColor: theme.palette.background.paper
-  },
-  appBar: {
-    top: "auto",
+  main: {
+    position: "fixed",
     bottom: 0,
-    paddingBottom: 0,
-    paddingTop: 0
+    right: 3
   },
-  toolbar: {
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingBottom: 0,
-    paddingTop: 0
-  },
-  button: {
-    marginBottom: 0,
-    marginTop: 0
+  link: {
+    margin: theme.spacing.unit
   }
 });
 class Footer extends Component {
@@ -43,19 +20,26 @@ class Footer extends Component {
     const { classes } = this.props;
 
     return (
-      <AppBar position="fixed" color="default" className={classes.appBar}>
-        <Toolbar className={classes.toolbar}>
-          <div />
-          <div>
-            <Button component={Link} to="/about" className={classes.button}>
-              About
-            </Button>
-            <Button component={Link} to="/privacy" className={classes.button}>
-              Privacy
-            </Button>
-          </div>
-        </Toolbar>
-      </AppBar>
+      <div className={classes.main}>
+        <Grid container>
+          <Typography
+            component={Link}
+            to="/about"
+            variant="caption"
+            className={classes.link}
+          >
+            About
+          </Typography>
+          <Typography
+            component={Link}
+            to="/privacy"
+            variant="caption"
+            className={classes.link}
+          >
+            Privacy
+          </Typography>
+        </Grid>
+      </div>
     );
   }
 }
