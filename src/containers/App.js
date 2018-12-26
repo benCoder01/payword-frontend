@@ -8,6 +8,8 @@ const mapStateToProps = (state) => ({
     ingame: state.games.ingame,
     game: state.games.game,
     errorMessage: state.games.errorMessage,
+    loadingGames: state.games.loading,
+    loadingUsers: state.users.loading,
 })
 
 const mapDispatchToProps = (dispatch) => ({

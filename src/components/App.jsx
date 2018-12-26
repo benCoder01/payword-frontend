@@ -6,6 +6,7 @@ import Main from "./Main";
 import ErrorSnackbar from "./ErrorSnackbar";
 import Footer from "./Footer";
 import withStyles from "@material-ui/core/styles/withStyles";
+import Loading from "./Loading"
 
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 
@@ -31,7 +32,13 @@ class App extends Component {
         <Router>
           <div className={classes.main}>
             <Route path="/" component={Header} />
-
+            <Route path="/" render={() => {
+              return(
+                <Loading
+                  loading={this.props.loadingGames || this.props.loadingUsers}
+                />
+              );
+            }} />
             <div>
               <Route
                 path="/"
