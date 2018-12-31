@@ -8,7 +8,7 @@ import SignUp from "../containers/SignUp";
 import About from "./About";
 import Privacy from "./Privacy";
 
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 
 class Main extends Component {
   isAdmin = () => {
@@ -21,8 +21,11 @@ class Main extends Component {
   render() {
     return (
       <div>
+        
         <Switch>
           <Route path="/sign-in" component={SignIn} />
+          <Route path="/sign-in" component={SignIn} />
+
           <Route path="/sign-up" component={SignUp} />
           <Route path="/about" component={About} />
           <Route path="/privacy" component={Privacy} />
@@ -46,6 +49,8 @@ class Main extends Component {
             </Switch>
           </div>
         )}
+
+        {!this.props.authenticated && <Redirect push to={"/sign-in"} />}
       </div>
     );
   }

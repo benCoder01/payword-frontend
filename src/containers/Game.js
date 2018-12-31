@@ -7,6 +7,8 @@ const mapStateToProps = state => ({
   username: state.users.username,
   token: state.users.token,
   gamename: state.games.gamename,
+  authenticated: state.users.authenticated,
+
 });
 
 const mapDispatchToProps = dispatch => ({

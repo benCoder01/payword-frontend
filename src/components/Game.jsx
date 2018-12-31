@@ -5,7 +5,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Sum from "./Sum";
 import { Button, Typography } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Divider from "@material-ui/core/Divider";
 
@@ -38,6 +38,8 @@ class Game extends Component {
 
   render() {
     const { classes } = this.props;
+    if (!this.props.authenticated) return (<Redirect push to={"/"}/>);
+
     if (this.props.game.users === undefined) return (<div></div>);
     return (
       <div>
