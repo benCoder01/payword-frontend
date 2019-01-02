@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { signIn} from "../actions";
+import { signIn, logout} from "../actions";
 import SignIn from "../components/SignIn";
 
 const mapStateToProps = state => ({
@@ -9,6 +9,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   handleSignIn: (username, password) => dispatch(signIn(username, password)),
+  handleLogout: () => dispatch(logout()),
+
 });
 
 export default connect(

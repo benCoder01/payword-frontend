@@ -77,9 +77,15 @@ class SignUp extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentDidMount() {
+    if (this.props.authenticated) {
+      this.props.handleLogout();
+    }
+  }
+
   async handleSubmit(event) {
-    event.preventDefault();    // avoid reloading
-    this.props.handleSignUp(this.state.username, this.state.passwordOne)
+    event.preventDefault(); // avoid reloading
+    this.props.handleSignUp(this.state.username, this.state.passwordOne);
   }
 
   handleChange = prop => event => {
@@ -91,7 +97,7 @@ class SignUp extends React.Component {
   render() {
     const { classes } = this.props;
     if (this.props.authenticated) {
-      return (<Redirect push to={"/games"}/>)
+      return <Redirect push to={"/games"} />;
     }
     return (
       <main className={classes.main}>
