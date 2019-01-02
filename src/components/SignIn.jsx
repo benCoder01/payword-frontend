@@ -63,6 +63,11 @@ class SignIn extends React.Component {
 
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+  componentDidMount() {
+    if (this.props.authenticated) {
+      this.props.handleLogout();
+    }
+  }
 
   handleSubmit(event) {
     event.preventDefault(); // avoid reloading
@@ -79,9 +84,9 @@ class SignIn extends React.Component {
   render() {
     const { classes } = this.props;
     if (this.props.authenticated) {
-      return (<Redirect push to={"/games"}/>)
+      return <Redirect push to={"/games"} />;
     }
-    
+
     return (
       <main className={classes.main}>
         <CssBaseline />

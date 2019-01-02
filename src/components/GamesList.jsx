@@ -143,6 +143,8 @@ class GamesList extends Component {
 
   render() {
     const { classes } = this.props;
+  
+
     return (
       <div>
         <main className={classes.layout}>
