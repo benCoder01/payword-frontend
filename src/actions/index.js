@@ -10,6 +10,10 @@ export const FETCH_CHANGE_PASSWORD_BEGIN = "FETCH_CHANGE_PASSWORD_BEGIN";
 export const FETCH_CHANGE_PASSWORD_SUCCESS = "FETCH_CHANGE_PASSWORD_SUCCESS";
 export const FETCH_CHANGE_PASSWORD_ERROR = "FETCH_CHANGE_PASSWORD_ERROR";
 
+export const FETCH_DELETE_ACCOUNT_BEGIN = "FETCH_DELETE_ACCOUNT_BEGIN"
+export const FETCH_DELETE_ACCOUNT_SUCCESS = "FETCH_DELETE_ACCOUNT_SUCCESS"
+export const FETCH_DELETE_ACCOUNT_ERROR = "FETCH_DELETE_ACCOUNT_ERROR"
+
 export const LOGOUT = "LOGOUT";
 
 // User management
@@ -52,6 +56,47 @@ export const signIn = (username, password) => {
       .catch(err => {
         dispatch({
           type: FETCH_USER_TOKEN_ERROR,
+          message: err.message
+        });
+      });
+  };
+};
+
+export const deleteAccount = (username, password, token) => {
+  const handleErrors = resp => {
+    if (resp.status === 400) throw Error("Wrong username or password!");
+    else if (resp.status !== 200) throw Error("Oohps! Something went wrong!");
+    return resp;
+  };
+
+  return async dispatch => {
+    dispatch({
+      type: FETCH_DELETE_ACCOUNT_BEGIN
+    });
+    fetch("https://payword.benediktricken.de/api/users/delete", {
+      method: "post",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: "BEARER " + token
+
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password
+      })
+    })
+      .then(handleErrors)
+      .then(res => res.json())
+      .then(resp => {
+        dispatch({
+          type: FETCH_DELETE_ACCOUNT_SUCCESS,
+        });
+        dispatch(logout())
+      })
+      .catch(err => {
+        dispatch({
+          type: FETCH_DELETE_ACCOUNT_ERROR,
           message: err.message
         });
       });
