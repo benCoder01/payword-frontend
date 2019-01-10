@@ -6,6 +6,9 @@ import {
   FETCH_SIGN_UP_SUCCESS,
   FETCH_SIGN_UP_ERROR,
   LOGOUT,
+  FETCH_DELETE_ACCOUNT_BEGIN,
+  FETCH_DELETE_ACCOUNT_SUCCESS,
+  FETCH_DELETE_ACCOUNT_ERROR
 } from "../actions";
 
 const initalState = {
@@ -56,6 +59,22 @@ const users = (state = initalState, action) => {
         ...state,
         errorMessage: action.message
       };
+    case FETCH_DELETE_ACCOUNT_BEGIN:
+      return {
+        ...state,
+        loading: true
+      }
+    case FETCH_DELETE_ACCOUNT_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+      }
+    case FETCH_DELETE_ACCOUNT_ERROR:
+      return {
+        ...state,
+        loading: false,
+        errorMessage: action.message
+      }
     default:
       return state;
   }

@@ -11,6 +11,7 @@ import Button from "@material-ui/core/Button"
 import CardHeader from "@material-ui/core/CardHeader"
 import DialogContentText from "@material-ui/core/DialogContentText";
 
+import DeleteAccountDialog from "../containers/DeleteAccountDialog" 
 import ChangePasswordDialog from "./ChangePasswordDialog";
 
 const styles = theme => ({
@@ -47,11 +48,16 @@ class UserSettings extends Component {
         super(props);
         this.state = {
             passwordChangeDialog: false,
+            deleteAccountDialog: false,
         }
     }
 
     handlePasswordChange = () => {
         this.setState({passwordChangeDialog: !this.state.passwordChangeDialog});
+    }
+
+    handleDeletAccount = () => {
+        this.setState({deleteAccountDialog: !this.state.deleteAccountDialog});
     }
 
     render() {
@@ -98,7 +104,22 @@ class UserSettings extends Component {
                             Change Password
                         </Button>
                     </Grid>
-                    
+                    <Grid item xs={12} >
+                    <Typography component="h2" variant="h5">Delete Account</Typography>
+                    <DialogContentText>
+                        Click on the button below to delete your account for ever.
+                    </DialogContentText>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Button
+                            color="secondary"
+                            fullWidth
+                            variant="contained"
+                            onClick={this.handleDeletAccount}
+                        >
+                            Delete Account
+                        </Button>
+                    </Grid>
                 </Grid>
         
             </Paper>
@@ -108,6 +129,10 @@ class UserSettings extends Component {
             handleClose={this.handlePasswordChange.bind(this)}
             token={this.props.token}
             username={this.props.username}
+        />
+        <DeleteAccountDialog 
+            open={this.state.deleteAccountDialog}
+            handleClose={this.handleDeletAccount.bind(this)}
         />
         </div>
         );
