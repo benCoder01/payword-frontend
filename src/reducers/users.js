@@ -8,7 +8,13 @@ import {
   LOGOUT,
   FETCH_DELETE_ACCOUNT_BEGIN,
   FETCH_DELETE_ACCOUNT_SUCCESS,
-  FETCH_DELETE_ACCOUNT_ERROR
+  FETCH_DELETE_ACCOUNT_ERROR,
+  FETCH_CHANGE_MAIL_BEGIN,
+  FETCH_CHANGE_MAIL_SUCCESS,
+  FETCH_CHANGE_MAIL_ERROR,
+  FETCH_SEND_PASSWORD_RESET_BEGIN,
+  FETCH_SEND_PASSWORD_RESET_SUCCESS,
+  FETCH_SEND_PASSWORD_RESET_ERROR
 } from "../actions";
 
 const initalState = {
@@ -63,18 +69,52 @@ const users = (state = initalState, action) => {
       return {
         ...state,
         loading: true
-      }
+      };
     case FETCH_DELETE_ACCOUNT_SUCCESS:
       return {
         ...state,
-        loading: false,
-      }
+        loading: false
+      };
     case FETCH_DELETE_ACCOUNT_ERROR:
       return {
         ...state,
         loading: false,
         errorMessage: action.message
-      }
+      };
+    case FETCH_CHANGE_MAIL_BEGIN:
+      return {
+        ...state,
+        loading: true
+      };
+    case FETCH_CHANGE_MAIL_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        errorMessage: "Success"
+      };
+    case FETCH_CHANGE_MAIL_ERROR:
+      return {
+        ...state,
+        loading: false,
+        errorMessage: action.message
+      };
+      case FETCH_SEND_PASSWORD_RESET_BEGIN:
+      return {
+        ...state,
+        loading: true
+      };
+    case FETCH_SEND_PASSWORD_RESET_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+      };
+    case FETCH_SEND_PASSWORD_RESET_ERROR:
+      return {
+        ...state,
+        loading: false,
+        errorMessage: action.message
+      };
+    
     default:
       return state;
   }

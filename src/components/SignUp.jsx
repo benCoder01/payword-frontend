@@ -71,7 +71,8 @@ class SignUp extends React.Component {
     this.state = {
       username: "",
       passwordOne: "",
-      passwordTwo: ""
+      passwordTwo: "",
+      email: "" // not required
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -183,6 +184,9 @@ class SignUp extends React.Component {
                 error={this.state.passwordOne !== this.state.passwordTwo}
                 label={"Retype Password"}
               />
+            </FormControl>
+            <FormControl margin="normal" fullWidth>
+              
             </FormControl>
             <Button
               type="submit"
