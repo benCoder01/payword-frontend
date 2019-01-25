@@ -29,7 +29,9 @@ import {
   FETCH_DECREMENT_SUCCESS,
   FETCH_DECREMENT_ERROR,
   LOGOUT,
-  CLOSE_ERROR_MESSAGE
+  CLOSE_ERROR_MESSAGE,
+  FETCH_CHANGE_MAIL_SUCCESS,
+  FETCH_CHANGE_MAIL_ERROR,
 } from "../actions";
 
 const initalState = {
@@ -225,12 +227,21 @@ const games = (state = initalState, action) => {
         game: {},
         errorMessage: ""
       };
-    case CLOSE_ERROR_MESSAGE: {
+    case CLOSE_ERROR_MESSAGE: 
       return {
         ...state,
         errorMessage: ""
       };
-    }
+    case FETCH_CHANGE_MAIL_ERROR: 
+      return {
+        ...state,
+        errorMessage: action.message
+      }
+    case FETCH_CHANGE_MAIL_SUCCESS:
+      return {
+        ...state,
+        errorMessage: "Success"
+      }
     default:
       return state;
   }

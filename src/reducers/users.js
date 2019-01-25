@@ -90,7 +90,6 @@ const users = (state = initalState, action) => {
       return {
         ...state,
         loading: false,
-        errorMessage: "Success"
       };
     case FETCH_CHANGE_MAIL_ERROR:
       return {
@@ -98,7 +97,7 @@ const users = (state = initalState, action) => {
         loading: false,
         errorMessage: action.message
       };
-      case FETCH_SEND_PASSWORD_RESET_BEGIN:
+    case FETCH_SEND_PASSWORD_RESET_BEGIN:
       return {
         ...state,
         loading: true
@@ -107,6 +106,7 @@ const users = (state = initalState, action) => {
       return {
         ...state,
         loading: false,
+        errorMessage: "Email has been sent"
       };
     case FETCH_SEND_PASSWORD_RESET_ERROR:
       return {
@@ -114,7 +114,7 @@ const users = (state = initalState, action) => {
         loading: false,
         errorMessage: action.message
       };
-    
+
     default:
       return state;
   }
