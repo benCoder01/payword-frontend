@@ -12,6 +12,8 @@ import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { Redirect, Link } from "react-router-dom";
 import PasswordInput from "./PasswordInput";
+import Grid from "@material-ui/core/Grid";
+import ForgotPasswordDialog from "../containers/ForgotPasswordDialog"
 
 const styles = theme => ({
   main: {
@@ -49,6 +51,9 @@ const styles = theme => ({
   },
   buttonSignIn: {
     marginLeft: 0
+  },
+  secondaryControls: {
+    marginTop: theme.spacing.unit
   }
 });
 
@@ -58,7 +63,8 @@ class SignIn extends React.Component {
 
     this.state = {
       username: "",
-      password: ""
+      password: "",
+      forgotPasswordDialog: false
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -80,6 +86,10 @@ class SignIn extends React.Component {
       [prop]: event.target.value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
     });
   };
+
+  handleForgotPassword() {
+    this.setState({ forgotPasswordDialog: !this.state.forgotPasswordDialog });
+  }
 
   render() {
     const { classes } = this.props;
@@ -133,19 +143,35 @@ class SignIn extends React.Component {
               Sign in
             </Button>
 
-            <Typography className={classes.caption} variant="subtitle1">
-              New here ?
-              <Button
-                component={Link}
-                to="/sign-up"
-                color="secondary"
-                className={classes.buttonSignIn}
-              >
-                Create Accout
-              </Button>
-            </Typography>
+            <Grid
+              container
+              justify="space-between"
+              className={classes.secondaryControls}
+            >
+              <Grid item xs>
+                <Button
+                  component={Link}
+                  variant="outlined"
+                  to="/sign-up"
+                  className={classes.buttonSignIn}
+                >
+                  Create Accout
+                </Button>
+              </Grid>
+              <Grid item xs>
+                <Button
+                  onClick={this.handleForgotPassword.bind(this)}
+                >
+                  Forgot password
+                </Button>
+              </Grid>
+            </Grid>
           </form>
         </Paper>
+        <ForgotPasswordDialog
+         open={this.state.forgotPasswordDialog}
+         handleClose={this.handleForgotPassword.bind(this)}
+        />
       </main>
     );
   }

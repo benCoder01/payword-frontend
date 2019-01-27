@@ -35,6 +35,7 @@ class PasswordInput extends React.Component {
                 <IconButton
                   aria-label="Toggle password visibility"
                   onClick={this.handleClickShowPassword}
+                  tabIndex="-1"
                 >
                   {this.state.showPassword ? <Visibility /> : <VisibilityOff />}
                 </IconButton>

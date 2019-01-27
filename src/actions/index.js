@@ -10,18 +10,29 @@ export const FETCH_CHANGE_PASSWORD_BEGIN = "FETCH_CHANGE_PASSWORD_BEGIN";
 export const FETCH_CHANGE_PASSWORD_SUCCESS = "FETCH_CHANGE_PASSWORD_SUCCESS";
 export const FETCH_CHANGE_PASSWORD_ERROR = "FETCH_CHANGE_PASSWORD_ERROR";
 
-export const FETCH_DELETE_ACCOUNT_BEGIN = "FETCH_DELETE_ACCOUNT_BEGIN"
-export const FETCH_DELETE_ACCOUNT_SUCCESS = "FETCH_DELETE_ACCOUNT_SUCCESS"
-export const FETCH_DELETE_ACCOUNT_ERROR = "FETCH_DELETE_ACCOUNT_ERROR"
+export const FETCH_DELETE_ACCOUNT_BEGIN = "FETCH_DELETE_ACCOUNT_BEGIN";
+export const FETCH_DELETE_ACCOUNT_SUCCESS = "FETCH_DELETE_ACCOUNT_SUCCESS";
+export const FETCH_DELETE_ACCOUNT_ERROR = "FETCH_DELETE_ACCOUNT_ERROR";
 
 export const LOGOUT = "LOGOUT";
+
+export const FETCH_CHANGE_MAIL_BEGIN = "FETCH_CHANGE_MAIL_BEGIN";
+export const FETCH_CHANGE_MAIL_SUCCESS = "FETCH_CHANGE_MAIL_SUCCESS";
+export const FETCH_CHANGE_MAIL_ERROR = "FETCH_CHANGE_MAIL_ERROR";
+
+export const FETCH_SEND_PASSWORD_RESET_BEGIN =
+  "FETCH_SEND_PASSWORD_RESET_BEGIN";
+export const FETCH_SEND_PASSWORD_RESET_SUCCESS =
+  "FETCH_SEND_PASSWORD_RESET_SUCCESS";
+export const FETCH_SEND_PASSWORD_RESET_ERROR =
+  "FETCH_SEND_PASSWORD_RESET_ERROR";
 
 // User management
 export const logout = () => ({
   type: LOGOUT
 });
 
-export const signIn = (username, password) => {
+export const signIn = (username, password, mail) => {
   const handleErrors = resp => {
     if (resp.status === 400) throw Error("Wrong username or password!");
     else if (resp.status !== 200) throw Error("Oohps! Something went wrong!");
@@ -52,6 +63,14 @@ export const signIn = (username, password) => {
           username: username,
           token: resp.token
         });
+
+        /*
+        On the sign-up process, the user can type in his email. 
+        However the request for saving the email differs from the sign-up request. 
+        Because you need a token for saving the email, 
+        the request can only be sent after the sign-in.
+        */
+        if (mail !== "") dispatch(changeMail(username, mail, resp.token));
       })
       .catch(err => {
         dispatch({
@@ -79,7 +98,6 @@ export const deleteAccount = (username, password, token) => {
         Accept: "application/json",
         "Content-Type": "application/json",
         Authorization: "BEARER " + token
-
       },
       body: JSON.stringify({
         username: username,
@@ -90,9 +108,9 @@ export const deleteAccount = (username, password, token) => {
       .then(res => res.json())
       .then(resp => {
         dispatch({
-          type: FETCH_DELETE_ACCOUNT_SUCCESS,
+          type: FETCH_DELETE_ACCOUNT_SUCCESS
         });
-        dispatch(logout())
+        dispatch(logout());
       })
       .catch(err => {
         dispatch({
@@ -103,7 +121,84 @@ export const deleteAccount = (username, password, token) => {
   };
 };
 
-export const signUp = (username, password) => {
+export const changeMail = (username, mail, token) => {
+  const handleErrors = resp => {
+    if (resp.status !== 200) throw Error("Oohps! Something went wrong!");
+    return resp;
+  };
+
+  return async dispatch => {
+    dispatch({
+      type: FETCH_CHANGE_MAIL_BEGIN
+    });
+    fetch("https://payword.benediktricken.de/api/users/mail/update-mail", {
+      method: "post",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: "BEARER " + token
+      },
+      body: JSON.stringify({
+        username: username,
+        mail: mail
+      })
+    })
+      .then(handleErrors)
+      .then(res => res.json())
+      .then(resp => {
+        dispatch({
+          type: FETCH_CHANGE_MAIL_SUCCESS
+        });
+      })
+      .catch(err => {
+        dispatch({
+          type: FETCH_CHANGE_MAIL_ERROR,
+          message: err.message
+        });
+      });
+  };
+};
+
+export const resetPassword = (username, mail) => {
+  const handleErrors = resp => {
+    console.log(resp);
+    if (resp.status === 400) throw Error("Wrong username or email");
+    else if (resp.status !== 200) throw Error("Oohps! Something went wrong!");
+    return resp;
+  };
+
+  return async dispatch => {
+    dispatch({
+      type: FETCH_SEND_PASSWORD_RESET_BEGIN
+    });
+    fetch("https://payword.benediktricken.de/api/users/mail/reset-password", {
+      method: "post",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        username: username,
+        mail: mail
+      })
+    })
+      .then(handleErrors)
+      .then(res => res.json())
+      .then(resp => {
+        dispatch({
+          type: FETCH_SEND_PASSWORD_RESET_SUCCESS
+        });
+      })
+      .catch(err => {
+        dispatch({
+          type: FETCH_SEND_PASSWORD_RESET_ERROR,
+          message: err.message
+        });
+      });
+  };
+};
+
+export const signUp = (username, password, mail) => {
   const handleErrors = resp => {
     if (resp.status === 400) throw Error("Choose another username");
     else if (resp.status !== 200) throw Error("Oohps! Something went wrong!");
@@ -132,7 +227,7 @@ export const signUp = (username, password) => {
         dispatch({
           type: FETCH_SIGN_UP_SUCCESS
         });
-        dispatch(signIn(username, password));
+        dispatch(signIn(username, password, mail));
       })
       .catch(err => {
         dispatch({
@@ -168,22 +263,26 @@ export const FETCH_UNSUBSCRIBE_GAME_SUCCESS = "FETCH_UNSUBSCRIBE_GAME_SUCCESS";
 export const FETCH_UNSUBSCRIBE_GAME_ERROR = "FETCH_UNSUBSCRIBE_GAME_ERROR";
 
 export const FETCH_ADD_CATEGORY_GAME_BEGIN = "FETCH_ADD_CATEGORY_GAME_BEGIN";
-export const FETCH_ADD_CATEGORY_GAME_SUCCESS = "FETCH_ADD_CATEGORY_GAME_SUCCESS";
+export const FETCH_ADD_CATEGORY_GAME_SUCCESS =
+  "FETCH_ADD_CATEGORY_GAME_SUCCESS";
 export const FETCH_ADD_CATEGORY_GAME_ERROR = "FETCH_ADD_CATEGORY_GAME_ERROR";
 
-export const FETCH_REMOVE_CATEGORY_GAME_BEGIN = "FETCH_REMOVE_CATEGORY_GAME_BEGIN";
-export const FETCH_REMOVE_CATEGORY_GAME_SUCCESS = "FETCH_REMOVE_CATEGORY_GAME_SUCCESS";
-export const FETCH_REMOVE_CATEGORY_GAME_ERROR = "FETCH_REMOVE_CATEGORY_GAME_ERROR";
+export const FETCH_REMOVE_CATEGORY_GAME_BEGIN =
+  "FETCH_REMOVE_CATEGORY_GAME_BEGIN";
+export const FETCH_REMOVE_CATEGORY_GAME_SUCCESS =
+  "FETCH_REMOVE_CATEGORY_GAME_SUCCESS";
+export const FETCH_REMOVE_CATEGORY_GAME_ERROR =
+  "FETCH_REMOVE_CATEGORY_GAME_ERROR";
 
-export const FETCH_INCREMENT_BEGIN = "FETCH_INCREMENT_BEGIN"
-export const FETCH_INCREMENT_SUCCESS = "FETCH_INCREMENT_SUCCESS"
-export const FETCH_INCREMENT_ERROR = "FETCH_INCREMENT_ERROR"
+export const FETCH_INCREMENT_BEGIN = "FETCH_INCREMENT_BEGIN";
+export const FETCH_INCREMENT_SUCCESS = "FETCH_INCREMENT_SUCCESS";
+export const FETCH_INCREMENT_ERROR = "FETCH_INCREMENT_ERROR";
 
-export const FETCH_DECREMENT_BEGIN = "FETCH_DECREMENT_BEGIN"
-export const FETCH_DECREMENT_SUCCESS = "FETCH_DECREMENT_SUCCESS"
-export const FETCH_DECREMENT_ERROR = "FETCH_DECREMENT_ERROR"
+export const FETCH_DECREMENT_BEGIN = "FETCH_DECREMENT_BEGIN";
+export const FETCH_DECREMENT_SUCCESS = "FETCH_DECREMENT_SUCCESS";
+export const FETCH_DECREMENT_ERROR = "FETCH_DECREMENT_ERROR";
 
-export const CLOSE_ERROR_MESSAGE = "CLOSE_ERROR_MESSAGE"
+export const CLOSE_ERROR_MESSAGE = "CLOSE_ERROR_MESSAGE";
 
 export const fetchGames = (username, token) => {
   const handleErrors = resp => {
@@ -195,17 +294,14 @@ export const fetchGames = (username, token) => {
     dispatch({
       type: FETCH_GAMES_BEGIN
     });
-    fetch(
-      "https://payword.benediktricken.de/api/games/user/" + username,
-      {
-        method: "get",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: "BEARER " + token
-        }
+    fetch("https://payword.benediktricken.de/api/games/user/" + username, {
+      method: "get",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: "BEARER " + token
       }
-    )
+    })
       .then(handleErrors)
       .then(res => res.json())
       .then(resp => {
@@ -298,7 +394,7 @@ export const createNewGame = (gamename, username, token) => {
       .then(res => res.json())
       .then(resp => {
         dispatch({
-          type: FETCH_CREATE_GAME_SUCCESS,
+          type: FETCH_CREATE_GAME_SUCCESS
         });
 
         dispatch(fetchGames(username, token));
@@ -314,7 +410,7 @@ export const createNewGame = (gamename, username, token) => {
 
 export const subscribeToGame = (gamename, username, token) => {
   const handleErrors = resp => {
-    if (resp.status === 400) throw Error("Game does not exist")
+    if (resp.status === 400) throw Error("Game does not exist");
     else if (resp.status !== 200) throw Error("Oohps! Something went wrong!");
     return resp;
   };
@@ -339,7 +435,7 @@ export const subscribeToGame = (gamename, username, token) => {
       .then(res => res.json())
       .then(resp => {
         dispatch({
-          type: FETCH_SUBSCRIBE_GAME_SUCCESS,
+          type: FETCH_SUBSCRIBE_GAME_SUCCESS
         });
 
         dispatch(fetchGames(username, token));
@@ -351,11 +447,12 @@ export const subscribeToGame = (gamename, username, token) => {
         });
       });
   };
-}
+};
 
 export const unsubscribeFromGame = (gamename, username, token) => {
   const handleErrors = resp => {
-    if (resp.status === 400) throw Error("You are the admin. You can´t leave the game.")
+    if (resp.status === 400)
+      throw Error("You are the admin. You can´t leave the game.");
     if (resp.status !== 200) throw Error("Oohps! Something went wrong!");
     return resp;
   };
@@ -380,7 +477,7 @@ export const unsubscribeFromGame = (gamename, username, token) => {
       .then(res => res.json())
       .then(resp => {
         dispatch({
-          type: FETCH_UNSUBSCRIBE_GAME_SUCCESS,
+          type: FETCH_UNSUBSCRIBE_GAME_SUCCESS
         });
 
         dispatch(fetchGames(username, token));
@@ -392,12 +489,13 @@ export const unsubscribeFromGame = (gamename, username, token) => {
         });
       });
   };
-}
+};
 
 export const addCategory = (categoryname, gamename, token) => {
   const handleErrors = resp => {
-    console.log(categoryname)
-    if (resp.status === 400) throw Error("Category already exists in the game.")
+    console.log(categoryname);
+    if (resp.status === 400)
+      throw Error("Category already exists in the game.");
     else if (resp.status !== 200) throw Error("Oohps! Something went wrong!");
     return resp;
   };
@@ -433,7 +531,7 @@ export const addCategory = (categoryname, gamename, token) => {
         });
       });
   };
-}
+};
 
 export const removeCategory = (categoryname, gamename, token) => {
   const handleErrors = resp => {
@@ -472,7 +570,7 @@ export const removeCategory = (categoryname, gamename, token) => {
         });
       });
   };
-}
+};
 
 export const increment = (username, categoryname, gamename, token) => {
   const handleErrors = resp => {
@@ -512,7 +610,7 @@ export const increment = (username, categoryname, gamename, token) => {
         });
       });
   };
-}
+};
 
 export const decrement = (username, categoryname, gamename, token) => {
   const handleErrors = resp => {
@@ -552,9 +650,8 @@ export const decrement = (username, categoryname, gamename, token) => {
         });
       });
   };
-}
+};
 
 export const closeErrorMessage = () => ({
   type: CLOSE_ERROR_MESSAGE
 });
-
