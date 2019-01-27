@@ -8,7 +8,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  handleSignIn: (username, password) => dispatch(signIn(username, password)),
+  handleSignIn: (username, password) => dispatch(signIn(username, password, "")), // no email on sign-in
   handleLogout: () => dispatch(logout()),
 
 });

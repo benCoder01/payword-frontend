@@ -32,7 +32,7 @@ export const logout = () => ({
   type: LOGOUT
 });
 
-export const signIn = (username, password) => {
+export const signIn = (username, password, mail) => {
   const handleErrors = resp => {
     if (resp.status === 400) throw Error("Wrong username or password!");
     else if (resp.status !== 200) throw Error("Oohps! Something went wrong!");
@@ -63,6 +63,14 @@ export const signIn = (username, password) => {
           username: username,
           token: resp.token
         });
+
+        /*
+        On the sign-up process, the user can type in his email. 
+        However the request for saving the email differs from the sign-up request. 
+        Because you need a token for saving the email, 
+        the request can only be sent after the sign-in.
+        */
+        if (mail !== "") dispatch(changeMail(username, mail, resp.token));
       })
       .catch(err => {
         dispatch({
@@ -153,7 +161,7 @@ export const changeMail = (username, mail, token) => {
 
 export const resetPassword = (username, mail) => {
   const handleErrors = resp => {
-    console.log(resp)
+    console.log(resp);
     if (resp.status === 400) throw Error("Wrong username or email");
     else if (resp.status !== 200) throw Error("Oohps! Something went wrong!");
     return resp;
@@ -190,7 +198,7 @@ export const resetPassword = (username, mail) => {
   };
 };
 
-export const signUp = (username, password) => {
+export const signUp = (username, password, mail) => {
   const handleErrors = resp => {
     if (resp.status === 400) throw Error("Choose another username");
     else if (resp.status !== 200) throw Error("Oohps! Something went wrong!");
@@ -219,7 +227,7 @@ export const signUp = (username, password) => {
         dispatch({
           type: FETCH_SIGN_UP_SUCCESS
         });
-        dispatch(signIn(username, password));
+        dispatch(signIn(username, password, mail));
       })
       .catch(err => {
         dispatch({

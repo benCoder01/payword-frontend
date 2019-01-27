@@ -61,6 +61,9 @@ const styles = theme => ({
   },
   doneIcon: {
     color: green[500]
+  },
+  secondaryControls: {
+    marginTop: theme.spacing.unit
   }
 });
 
@@ -86,12 +89,28 @@ class SignUp extends React.Component {
 
   async handleSubmit(event) {
     event.preventDefault(); // avoid reloading
-    this.props.handleSignUp(this.state.username, this.state.passwordOne);
+    // test email
+
+    this.props.handleSignUp(
+      this.state.username,
+      this.state.passwordOne,
+      this.state.email
+    );
+  }
+
+  emailValid() {
+    if (this.state.email !== "") {
+      return this.state.email.match(
+        // eslint-disable-next-line
+        /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+    } else return true;
   }
 
   handleChange = prop => event => {
     this.setState({
-      [prop]: event.target.value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+      //[prop]: event.target.value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+      [prop]: event.target.value
     });
   };
 
@@ -186,7 +205,16 @@ class SignUp extends React.Component {
               />
             </FormControl>
             <FormControl margin="normal" fullWidth>
-              
+              <InputLabel htmlFor="email">Email (Optional)</InputLabel>
+              <Input
+                type="email"
+                id="email"
+                name="email"
+                value={this.state.email}
+                onChange={this.handleChange("email")}
+                autoComplete="email"
+                error={!this.emailValid()}
+              />
             </FormControl>
             <Button
               type="submit"
@@ -200,22 +228,26 @@ class SignUp extends React.Component {
                 !this.state.passwordOne.match(/(?=.*\d)/) ||
                 this.state.passwordOne.length < 8 ||
                 this.state.passwordOne.length > 300 ||
-                !this.state.passwordOne.match(/([a-zA-Z])/)
+                !this.state.passwordOne.match(/([a-zA-Z])/) ||
+                this.state.username === "" ||
+                !this.emailValid()
               }
             >
               Sign up
             </Button>
-            <Typography className={classes.caption} variant="subtitle1">
-              Already have an account ?
-              <Button
-                component={Link}
-                to="/sign-in"
-                color="secondary"
-                className={classes.buttonSignIn}
-              >
-                Sign In
-              </Button>
-            </Typography>
+            <Grid container justify="space-between" className={classes.secondaryControls}>
+              <Grid item xs>
+                <Button
+                  component={Link}
+                  to="/sign-in"
+                  className={classes.buttonSignIn}
+                  variant="outlined"
+                  fullWidth
+                >
+                  Sign In
+                </Button>
+              </Grid>
+            </Grid>
           </form>
         </Paper>
       </main>

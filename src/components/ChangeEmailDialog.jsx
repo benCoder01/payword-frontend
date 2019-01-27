@@ -5,7 +5,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import TextField from "@material-ui/core/TextField"
+import TextField from "@material-ui/core/TextField";
 
 class ChangeEmailDialog extends React.Component {
   constructor(props) {
@@ -20,8 +20,24 @@ class ChangeEmailDialog extends React.Component {
     this.handleButtonCancel = this.handleButtonCancel.bind(this);
   }
 
+  emailValid() {
+    return this.state.mail.match(
+      // eslint-disable-next-line
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+  }
+
   handleButtonEnter() {
-    this.props.handleChangeMail(this.props.username, this.state.mail, this.props.token);
+    if (!this.emailValid()) {
+      this.setState({ errorMessage: "Email is not valid!" });
+      return;
+    }
+
+    this.props.handleChangeMail(
+      this.props.username,
+      this.state.mail,
+      this.props.token
+    );
     this.props.handleClose();
   }
 
@@ -57,6 +73,7 @@ class ChangeEmailDialog extends React.Component {
               autoComplete="email"
               value={this.state.mail}
               onChange={e => this.setState({ mail: e.target.value })}
+              error={!this.emailValid()}
             />
           </DialogContent>
           <DialogActions>
