@@ -32,6 +32,14 @@ export const logout = () => ({
   type: LOGOUT
 });
 
+const getAddress = () => {
+  if (process.env.NODE_ENV === "production") {
+    return "https://payword.benediktricken.de/api"
+  }else {
+    return "http://localhost:3333"
+  }
+}
+
 export const signIn = (username, password, mail) => {
   const handleErrors = resp => {
     if (resp.status === 400) throw Error("Wrong username or password!");
@@ -44,7 +52,7 @@ export const signIn = (username, password, mail) => {
     dispatch({
       type: FETCH_USER_TOKEN_BEGIN
     });
-    fetch("https://payword.benediktricken.de/api/users/sign-in", {
+    fetch(getAddress() + "/users/sign-in", {
       method: "post",
       headers: {
         Accept: "application/json",
@@ -92,7 +100,7 @@ export const deleteAccount = (username, password, token) => {
     dispatch({
       type: FETCH_DELETE_ACCOUNT_BEGIN
     });
-    fetch("https://payword.benediktricken.de/api/users/delete", {
+    fetch(getAddress() + "/users/delete", {
       method: "post",
       headers: {
         Accept: "application/json",
@@ -131,7 +139,7 @@ export const changeMail = (username, mail, token) => {
     dispatch({
       type: FETCH_CHANGE_MAIL_BEGIN
     });
-    fetch("https://payword.benediktricken.de/api/users/mail/update-mail", {
+    fetch(getAddress() + "/users/mail/update-mail", {
       method: "post",
       headers: {
         Accept: "application/json",
@@ -171,7 +179,7 @@ export const resetPassword = (username, mail) => {
     dispatch({
       type: FETCH_SEND_PASSWORD_RESET_BEGIN
     });
-    fetch("https://payword.benediktricken.de/api/users/mail/reset-password", {
+    fetch(getAddress() + "/users/mail/reset-password", {
       method: "post",
       headers: {
         Accept: "application/json",
@@ -210,7 +218,7 @@ export const signUp = (username, password, mail) => {
     dispatch({
       type: FETCH_SIGN_UP_BEGIN
     });
-    fetch("https://payword.benediktricken.de/api/users/sign-up", {
+    fetch(getAddress() + "/users/sign-up", {
       method: "post",
       headers: {
         Accept: "application/json",
@@ -294,7 +302,7 @@ export const fetchGames = (username, token) => {
     dispatch({
       type: FETCH_GAMES_BEGIN
     });
-    fetch("https://payword.benediktricken.de/api/games/user/" + username, {
+    fetch(getAddress() + "/games/user/" + username, {
       method: "get",
       headers: {
         Accept: "application/json",
@@ -329,7 +337,7 @@ export const fetchGame = (gamename, token) => {
     dispatch({
       type: FETCH_GAME_BEGIN
     });
-    fetch("https://payword.benediktricken.de/api/games/" + gamename, {
+    fetch(getAddress() + "/games/" + gamename, {
       method: "get",
       headers: {
         Accept: "application/json",
@@ -378,7 +386,7 @@ export const createNewGame = (gamename, username, token) => {
     dispatch({
       type: FETCH_CREATE_GAME_BEGIN
     });
-    fetch("https://payword.benediktricken.de/api/games/create", {
+    fetch(getAddress() + "/games/create", {
       method: "post",
       headers: {
         Accept: "application/json",
@@ -419,7 +427,7 @@ export const subscribeToGame = (gamename, username, token) => {
     dispatch({
       type: FETCH_SUBSCRIBE_GAME_BEGIN
     });
-    fetch("https://payword.benediktricken.de/api/games/enter", {
+    fetch(getAddress() + "/games/enter", {
       method: "post",
       headers: {
         Accept: "application/json",
@@ -461,7 +469,7 @@ export const unsubscribeFromGame = (gamename, username, token) => {
     dispatch({
       type: FETCH_UNSUBSCRIBE_GAME_BEGIN
     });
-    fetch("https://payword.benediktricken.de/api/games/leave", {
+    fetch(getAddress() + "/games/leave", {
       method: "post",
       headers: {
         Accept: "application/json",
@@ -504,7 +512,7 @@ export const addCategory = (categoryname, gamename, token) => {
     dispatch({
       type: FETCH_ADD_CATEGORY_GAME_BEGIN
     });
-    fetch("https://payword.benediktricken.de/api/games/category/add", {
+    fetch(getAddress() + "/games/category/add", {
       method: "post",
       headers: {
         Accept: "application/json",
@@ -543,7 +551,7 @@ export const removeCategory = (categoryname, gamename, token) => {
     dispatch({
       type: FETCH_REMOVE_CATEGORY_GAME_BEGIN
     });
-    fetch("https://payword.benediktricken.de/api/games/category/remove", {
+    fetch(getAddress() + "/games/category/remove", {
       method: "post",
       headers: {
         Accept: "application/json",
@@ -582,7 +590,7 @@ export const increment = (username, categoryname, gamename, token) => {
     dispatch({
       type: FETCH_INCREMENT_BEGIN
     });
-    fetch("https://payword.benediktricken.de/api/games/increment", {
+    fetch(getAddress() + "/games/increment", {
       method: "post",
       headers: {
         Accept: "application/json",
@@ -622,7 +630,7 @@ export const decrement = (username, categoryname, gamename, token) => {
     dispatch({
       type: FETCH_DECREMENT_BEGIN
     });
-    fetch("https://payword.benediktricken.de/api/games/decrement", {
+    fetch(getAddress() + "/games/decrement", {
       method: "post",
       headers: {
         Accept: "application/json",
