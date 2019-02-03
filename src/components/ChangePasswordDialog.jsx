@@ -24,7 +24,15 @@ export default class ChangPasswordDialog extends React.Component {
 
     this.handleChangePassword = this.handleChangePassword.bind(this);
   }
-
+  
+  getAddress = () => {
+    if (process.env.NODE_ENV === "production") {
+      return "https://payword.benediktricken.de/api"
+    }else {
+      return "http://localhost:3333"
+    }
+  }
+  
   handleSuccesMessageClose() {}
 
   async handleChangePassword() {
@@ -35,7 +43,7 @@ export default class ChangPasswordDialog extends React.Component {
 
 
     const response = await fetch(
-      "https://payword.benediktricken.de/api/users/change-password",
+      this.getAddress() + "/users/change-password",
       {
         method: "post",
         headers: {
