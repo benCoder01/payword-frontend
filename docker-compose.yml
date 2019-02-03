@@ -14,3 +14,6 @@ services:
       - 3333:3333
     environment:
       - APP_ENV=production
+      # Username and password are not existing!
+      - EMAIL_USERNAME = abcd
+      - EMAIL_PASSWORD = abcd
