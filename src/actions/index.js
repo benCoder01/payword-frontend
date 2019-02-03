@@ -1,3 +1,5 @@
+import soundfile from "../assets/kaching.mp3";
+
 export const FETCH_USER_TOKEN_BEGIN = "FETCH_USER_TOKEN_BEGIN";
 export const FETCH_USER_TOKEN_SUCCES = "FETCH_USER_TOKEN_SUCCES";
 export const FETCH_USER_TOKEN_ERROR = "FETCH_USER_TOKEN_ERROR";
@@ -34,11 +36,11 @@ export const logout = () => ({
 
 const getAddress = () => {
   if (process.env.NODE_ENV === "production") {
-    return "https://payword.benediktricken.de/api"
-  }else {
-    return "http://localhost:3333"
+    return "https://payword.benediktricken.de/api";
+  } else {
+    return "http://localhost:3333";
   }
-}
+};
 
 export const signIn = (username, password, mail) => {
   const handleErrors = resp => {
@@ -610,6 +612,10 @@ export const increment = (username, categoryname, gamename, token) => {
           type: FETCH_INCREMENT_SUCCESS,
           game: resp
         });
+
+        let audio = new Audio(soundfile);
+        audio.currentTime = 1;
+        audio.play();
       })
       .catch(err => {
         dispatch({
