@@ -58,7 +58,7 @@ class Player extends Component {
     return (
       <div>
         <CssBaseline />
-        <Card className={classes.card}>
+        <Card className={classes.card} elevation={1}>
           <CardHeader
             avatar={
               <Avatar className={classes.avatar}>

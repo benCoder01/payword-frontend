@@ -29,7 +29,7 @@ export default class ChangPasswordDialog extends React.Component {
     if (process.env.NODE_ENV === "production") {
       return "https://payword.benediktricken.de/api"
     }else {
-      return "http://localhost:3333"
+      return "http://"+ document.location.hostname +":3333"
     }
   }
   

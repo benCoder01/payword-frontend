@@ -141,7 +141,6 @@ class SignUp extends React.Component {
                 name="username"
                 value={this.state.username}
                 onChange={this.handleChange("username")}
-                autoFocus
               />
             </FormControl>
             <Typography variant="subtitle1">

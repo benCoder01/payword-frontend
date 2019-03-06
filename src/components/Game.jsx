@@ -3,11 +3,9 @@ import Player from "../containers/Player";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import Sum from "./Sum";
-import { Button, Typography } from "@material-ui/core";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Divider from "@material-ui/core/Divider";
+import GameOverview from "./GameOverview";
 
 const styles = theme => ({
   root: {
@@ -28,45 +26,21 @@ const styles = theme => ({
 });
 
 class Game extends Component {
-  isAdmin = () => {
-    return this.props.username === this.props.game.admin;
-  };
-
   componentDidMount() {
-    this.props.handleFetchGame(this.props.gamename, this.props.token)
+    this.props.handleFetchGame(this.props.gamename, this.props.token);
   }
 
   render() {
     const { classes } = this.props;
-    if (!this.props.authenticated) return (<Redirect push to={"/"}/>);
+    if (!this.props.authenticated) return <Redirect push to={"/"} />;
 
-    if (this.props.game.users === undefined) return (<div></div>);
+    if (this.props.game.users === undefined) return <div />;
     return (
       <div>
         <CssBaseline />
 
-        <Sum game={this.props.game} />
-        <Grid container alignItems="center" justify="space-between">
-          <Grid item xs={3} >
-            <Typography variant="subtitle1">
-              Admin: {this.props.game.admin}
-            </Typography>
-          </Grid>
-          <Grid item xs={3}>
-            {this.isAdmin() && (
-              <Button
-                component={Link}
-                to="/game/manage"
-                variant="contained"
-              >
-                Manage
-              </Button>
-            )}
-          </Grid>
-          
-        </Grid>
+        <GameOverview game={this.props.game} username={this.props.username} />
 
-        <Divider />
         <Grid container justify="center" className={classes.root}>
           {this.props.game.users.map(user => (
             <Grid key={user.username} item className={classes.item}>
