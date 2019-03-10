@@ -11,6 +11,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import { Link } from "react-router-dom";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import Info from "@material-ui/icons/Info";
+import InformationDialog from "./InformationDialog";
 
 const styles = {
   root: {
@@ -34,7 +36,8 @@ const styles = {
 
 class Header extends React.Component {
   state = {
-    anchorEl: null
+    anchorEl: null,
+    informationDialog: false
   };
 
   handleMenu = event => {
@@ -44,6 +47,10 @@ class Header extends React.Component {
   handleClose = () => {
     this.setState({ anchorEl: null });
   };
+
+  handleInformationDialog = () => {
+    this.setState({informationDialog: !this.state.informationDialog});
+  }
 
   handleRefresh = () => {
     if (this.props.ingame) {
@@ -84,6 +91,9 @@ class Header extends React.Component {
             </Typography>
             {this.props.authenticated && (
               <div>
+                <IconButton color="inherit" onClick={this.handleInformationDialog}>
+                  <Info />
+                </IconButton>
                 <IconButton color="inherit" onClick={this.handleRefresh}>
                   <Refresh />
                 </IconButton>
@@ -131,6 +141,10 @@ class Header extends React.Component {
             )}
           </Toolbar>
         </AppBar>
+        <InformationDialog
+          open={this.state.informationDialog}
+          handleClose={this.handleInformationDialog}
+        />
       </div>
     );
   }
