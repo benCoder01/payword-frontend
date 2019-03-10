@@ -57,14 +57,14 @@ const styles = theme => ({
     marginLeft: 0
   },
   clearIcon: {
-    color: red[500]
+    color: red[500],
   },
   doneIcon: {
     color: green[500]
   },
   secondaryControls: {
     marginTop: theme.spacing.unit
-  }
+  },
 });
 
 class SignUp extends React.Component {
@@ -89,7 +89,6 @@ class SignUp extends React.Component {
 
   async handleSubmit(event) {
     event.preventDefault(); // avoid reloading
-    // test email
 
     this.props.handleSignUp(
       this.state.username,
@@ -144,19 +143,19 @@ class SignUp extends React.Component {
               />
             </FormControl>
             <Typography variant="subtitle1">
-              Your Password should at least contain: <br />
+              Your Password should <b>at least contain</b>: <br />
             </Typography>
 
             <Grid container>
               <Grid item>
-                {this.state.passwordOne.length >= 8 ? (
+                {this.state.passwordOne.length >= 4 ? (
                   <DoneIcon className={classes.doneIcon} />
                 ) : (
                   <ClearIcon className={classes.clearIcon} />
                 )}
               </Grid>
               <Grid item>
-                <Typography variant="subtitle1">8 Characters</Typography>
+                <Typography variant="subtitle1">4 Characters</Typography>
               </Grid>
             </Grid>
 
@@ -225,7 +224,7 @@ class SignUp extends React.Component {
                 this.state.passwordOne !== this.state.passwordTwo ||
                 this.state.passwordOne === "" ||
                 !this.state.passwordOne.match(/(?=.*\d)/) ||
-                this.state.passwordOne.length < 8 ||
+                this.state.passwordOne.length < 4 ||
                 this.state.passwordOne.length > 300 ||
                 !this.state.passwordOne.match(/([a-zA-Z])/) ||
                 this.state.username === "" ||
