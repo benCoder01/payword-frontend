@@ -183,23 +183,27 @@ const games = (state = initalState, action) => {
         errorMessage: action.message
       };
     case FETCH_INCREMENT_BEGIN:
-      return {
-        ...state,
-        loading: true
-      };
-    case FETCH_INCREMENT_SUCCESS:
       let gameIncrement = action.game;
       gameIncrement["users"] = mapGameToUsers(gameIncrement);
       return {
         ...state,
-        loading: false,
+        loading: true,
         game: gameIncrement
       };
-    case FETCH_INCREMENT_ERROR:
+    case FETCH_INCREMENT_SUCCESS:
+      
       return {
         ...state,
         loading: false,
-        errorMessage: action.message
+      };
+    case FETCH_INCREMENT_ERROR:
+      let gameReset = action.game;
+      gameReset["users"] = mapGameToUsers(gameReset);
+      return {
+        ...state,
+        loading: false,
+        errorMessage: action.message,
+        game: gameReset
       };
     case FETCH_DECREMENT_BEGIN:
       return {

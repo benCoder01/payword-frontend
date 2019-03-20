@@ -38,7 +38,7 @@ const getAddress = () => {
   if (process.env.NODE_ENV === "production") {
     return "https://payword.benediktricken.de/api";
   } else {
-    return "http://"+ document.location.hostname +":3333";
+    return "http://" + document.location.hostname + ":3333";
   }
 };
 
@@ -582,16 +582,24 @@ export const removeCategory = (categoryname, gamename, token) => {
   };
 };
 
-export const increment = (username, categoryname, gamename, token) => {
+export const increment = (username, categoryname, gamename, game, token) => {
   const handleErrors = resp => {
     if (resp.status !== 200) throw Error("Oohps! Something went wrong!");
     return resp;
   };
 
   return async dispatch => {
+    let incrementedGame = incrementGame(game, categoryname, username);
+
     dispatch({
-      type: FETCH_INCREMENT_BEGIN
+      type: FETCH_INCREMENT_BEGIN,
+      game: incrementedGame
     });
+
+    let audio = new Audio(soundfile);
+    audio.currentTime = 1;
+    audio.play();
+
     fetch(getAddress() + "/games/increment", {
       method: "post",
       headers: {
@@ -609,24 +617,76 @@ export const increment = (username, categoryname, gamename, token) => {
       .then(res => res.json())
       .then(resp => {
         dispatch({
-          type: FETCH_INCREMENT_SUCCESS,
-          game: resp
+          type: FETCH_INCREMENT_SUCCESS
         });
-
-        let audio = new Audio(soundfile);
-        audio.currentTime = 1;
-        audio.play();
       })
       .catch(err => {
         dispatch({
           type: FETCH_INCREMENT_ERROR,
-          message: err.message
+          message: err.message,
+          game: decrementGame(incrementedGame, categoryname, username)
         });
       });
   };
 };
 
-export const decrement = (username, categoryname, gamename, token) => {
+const incrementGame = (game, categoryname, username) => {
+  let incrementedGame = { ...game };
+
+  let i = 0;
+  for (i = 0; i < incrementedGame.categories.length; i++) {
+    if (incrementedGame.categories[i].Name === categoryname) break;
+  }
+
+  // increment in categories field
+  for (let j = 0; j < incrementedGame.categories[i].Usercounter.length; j++) {
+    if (incrementedGame.categories[i].Usercounter[j].Username === username) {
+      incrementedGame.categories[i].Usercounter[j].Value += 1;
+      break;
+    }
+  }
+
+  // increment in user field
+  for (let j; j < game.users.length; j++) {
+    if (game.users[j].username === username) {
+      game.users[j][categoryname] += 1;
+      break;
+    }
+  }
+
+  return incrementedGame;
+};
+const decrementGame = (game, categoryname, username) => {
+  let incrementedGame = { ...game };
+
+  let i = 0;
+  for (i = 0; i < incrementedGame.categories.length; i++) {
+    if (incrementedGame.categories[i].Name === categoryname) break;
+  }
+
+  // increment in categories field
+  for (let j = 0; j < incrementedGame.categories[i].Usercounter.length; j++) {
+    if (incrementedGame.categories[i].Usercounter[j].Username === username) {
+      if (incrementedGame.categories[i].Usercounter[j].Value > 0) {
+        incrementedGame.categories[i].Usercounter[j].Value -= 1;
+      }
+      break;
+    }
+  }
+
+  // increment in user field
+  for (let j; j < game.users.length; j++) {
+    if (game.users[j].username === username) {
+      if (game.users[j][categoryname] > 0) {
+        game.users[j][categoryname] -= 1;
+      }
+      break;
+    }
+  }
+
+  return incrementedGame;
+};
+export const decrement = (username, categoryname, gamename, game, token) => {
   const handleErrors = resp => {
     if (resp.status !== 200) throw Error("Oohps! Something went wrong!");
     return resp;

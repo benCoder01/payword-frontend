@@ -92,6 +92,7 @@ class Player extends Component {
                           this.props.user.username,
                           category.name,
                           this.props.gamename,
+                          this.props.game,
                           this.props.token
                         )
                       }
@@ -107,6 +108,7 @@ class Player extends Component {
                           this.props.user.username,
                           category.name,
                           this.props.gamename,
+                          this.props.game,
                           this.props.token
                         )
                         }
