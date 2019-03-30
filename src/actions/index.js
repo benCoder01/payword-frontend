@@ -294,6 +294,9 @@ export const FETCH_DECREMENT_ERROR = "FETCH_DECREMENT_ERROR";
 
 export const CLOSE_ERROR_MESSAGE = "CLOSE_ERROR_MESSAGE";
 
+export const SORT_BY_MONEY = "SORT_BY_MONEY";
+export const SORT_BY_NAME = "SORT_BY_NAME";
+
 export const fetchGames = (username, token) => {
   const handleErrors = resp => {
     if (resp.status !== 200) throw Error("Oohps! Something went wrong!");
@@ -729,3 +732,13 @@ export const decrement = (username, categoryname, gamename, game, token) => {
 export const closeErrorMessage = () => ({
   type: CLOSE_ERROR_MESSAGE
 });
+
+export const sortUsersByName = (game) => ({
+  type: SORT_BY_NAME,
+  game: game
+})
+
+export const sortUsersByMoney = (game) => ({
+  type: SORT_BY_MONEY,
+  game: game
+})

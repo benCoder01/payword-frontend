@@ -32,6 +32,8 @@ import {
   CLOSE_ERROR_MESSAGE,
   FETCH_CHANGE_MAIL_SUCCESS,
   FETCH_CHANGE_MAIL_ERROR,
+  SORT_BY_MONEY,
+  SORT_BY_NAME,
 } from "../actions";
 
 const initalState = {
@@ -71,6 +73,7 @@ const games = (state = initalState, action) => {
     case FETCH_GAME_SUCCESS:
       let game = action.game;
       game["users"] = mapGameToUsers(game);
+      game = sortUsersByName(game)
       return {
         ...state,
         loading: false,
@@ -246,10 +249,58 @@ const games = (state = initalState, action) => {
         ...state,
         errorMessage: "Success"
       }
+    case SORT_BY_MONEY:
+    let sortedGameMoney = {...action.game}
+    game = sortUsersByMoney(sortedGameMoney)
+      return {
+        ...state,
+        game: sortedGameMoney
+      }
+    case SORT_BY_NAME:
+      let sortedGameName = {...action.game}
+      game = sortUsersByName(sortedGameName)
+      return {
+        ...state,
+        game: sortedGameName
+      }
     default:
       return state;
   }
 };
+
+const sortUsersByName = game => {
+  game.users.sort((user1, user2) => user1.username.localeCompare(user2.username))
+  return game;
+} 
+
+const sortUsersByMoney = game => {
+  game.users.sort((user1, user2) => {
+    let valueUser1 = 0;
+
+    for (const key in user1) {
+      if (key === "username") {
+        continue;
+      }
+      
+      valueUser1 += user1[key];
+    } 
+    
+    let valueUser2 = 0;
+
+
+    for (const key in user2) {
+      if (key === "username") {
+        continue;
+      }
+      
+      valueUser2 += user2[key];
+    }
+
+    return (valueUser1 - valueUser2) * -1;
+  })
+
+  return game;
+} 
 
 const mapGameToUsers = game => {
   let users = [];

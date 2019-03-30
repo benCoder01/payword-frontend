@@ -6,6 +6,8 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import { Link } from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
 import SettingIcon from "@material-ui/icons/Settings";
+import SortIcon from "@material-ui/icons/Sort"
+import SortMenu from "../containers/SortMenu"
 
 const styles = theme => ({
   content: {
@@ -21,6 +23,10 @@ const styles = theme => ({
 });
 
 class GameOverview extends Component {
+  state = {
+    anchorEl: null
+  }
+  
   calculateSum(game) {
     let sum = 0;
     for (let i = 0; i < game.categories.length; i++) {
@@ -34,8 +40,17 @@ class GameOverview extends Component {
     return this.props.username === this.props.game.admin;
   };
 
+  handleSortMenuOpen = (event) => {
+    this.setState({ anchorEl: event.currentTarget });
+  }
+
+  handleSortMenuClose = () => {
+    this.setState({ anchorEl: null });
+  }
+
   render() {
     const { classes } = this.props;
+    const { anchorEl } = this.state;
     return (
       <Paper square elevation={2}>
         <Grid container>
@@ -55,7 +70,7 @@ class GameOverview extends Component {
               </Typography>
             </div>
           </Grid>
-          <Grid item xs={this.isAdmin() ? 1 : 0} className={classes.settings}>
+          <Grid item xs={1} className={classes.settings}>
             {this.isAdmin() && (
               <Typography>
                 <IconButton
@@ -66,7 +81,19 @@ class GameOverview extends Component {
                   <SettingIcon />
                 </IconButton>
               </Typography>
+
             )}
+            <IconButton
+              onClick={this.handleSortMenuOpen}
+              aria-owns={anchorEl ? 'simple-menu' : undefined}
+              aria-haspopup="true"
+            >
+              <SortIcon />
+            </IconButton>
+            <SortMenu 
+              anchorEl={anchorEl}
+              handleClose={this.handleSortMenuClose}
+            />
           </Grid>
         </Grid>
       </Paper>
