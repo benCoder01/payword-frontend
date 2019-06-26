@@ -83,7 +83,7 @@ class SignIn extends React.Component {
 
   handleChange = prop => event => {
     this.setState({
-      [prop]: event.target.value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+      [prop]: event.target.value
     });
   };
 
