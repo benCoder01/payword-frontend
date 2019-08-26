@@ -43,7 +43,7 @@ const initalState = {
   errorMessage: "",
   loading: false,
   sortedByValue: true,
-  sortedByName: false,
+  sortedByName: false
 };
 
 const games = (state = initalState, action) => {
@@ -74,7 +74,13 @@ const games = (state = initalState, action) => {
 
     case FETCH_GAME_SUCCESS:
       let game = action.game;
-      game["users"] = mapGameToUsers(game, state.sortedByName, state.sortedByValue);
+      game["users"] = mapGameToUsers(
+        game,
+        state.sortedByName,
+        state.sortedByValue
+      );
+
+      console.log(state.sortedByName);
       return {
         ...state,
         loading: false,
@@ -155,7 +161,11 @@ const games = (state = initalState, action) => {
       };
     case FETCH_ADD_CATEGORY_GAME_SUCCESS:
       let gameCategoryAdd = action.game;
-      gameCategoryAdd["users"] = mapGameToUsers(gameCategoryAdd, state.sortedByName, state.sortedByValue);
+      gameCategoryAdd["users"] = mapGameToUsers(
+        gameCategoryAdd,
+        state.sortedByName,
+        state.sortedByValue
+      );
       return {
         ...state,
         loading: false,
@@ -174,7 +184,11 @@ const games = (state = initalState, action) => {
       };
     case FETCH_REMOVE_CATEGORY_GAME_SUCCESS:
       let gameCategoryRemove = action.game;
-      gameCategoryRemove["users"] = mapGameToUsers(gameCategoryRemove, state.sortedByName, state.sortedByValue);
+      gameCategoryRemove["users"] = mapGameToUsers(
+        gameCategoryRemove,
+        state.sortedByName,
+        state.sortedByValue
+      );
       return {
         ...state,
         loading: false,
@@ -188,7 +202,11 @@ const games = (state = initalState, action) => {
       };
     case FETCH_INCREMENT_BEGIN:
       let gameIncrement = action.game;
-      gameIncrement["users"] = mapGameToUsers(gameIncrement, state.sortedByName, state.sortedByValue);
+      gameIncrement["users"] = mapGameToUsers(
+        gameIncrement,
+        state.sortedByName,
+        state.sortedByValue
+      );
       return {
         ...state,
         loading: true,
@@ -201,7 +219,11 @@ const games = (state = initalState, action) => {
       };
     case FETCH_INCREMENT_ERROR:
       let gameReset = action.game;
-      gameReset["users"] = mapGameToUsers(gameReset, state.sortedByName, state.sortedByValue);
+      gameReset["users"] = mapGameToUsers(
+        gameReset,
+        state.sortedByName,
+        state.sortedByValue
+      );
       return {
         ...state,
         loading: false,
@@ -215,7 +237,11 @@ const games = (state = initalState, action) => {
       };
     case FETCH_DECREMENT_SUCCESS:
       let gameDecrement = action.game;
-      gameDecrement["users"] = mapGameToUsers(gameDecrement, state.sortedByName, state.sortedByValue);
+      gameDecrement["users"] = mapGameToUsers(
+        gameDecrement,
+        state.sortedByName,
+        state.sortedByValue
+      );
       return {
         ...state,
         loading: false,
@@ -232,7 +258,9 @@ const games = (state = initalState, action) => {
         ingame: false,
         games: [],
         game: {},
-        errorMessage: ""
+        errorMessage: "",
+        sortedByValue: true,
+        sortedByName: false
       };
     case CLOSE_ERROR_MESSAGE:
       return {
@@ -256,7 +284,7 @@ const games = (state = initalState, action) => {
         ...state,
         game: sortedGameMoney,
         sortedByName: false,
-        sortedByValue: true,
+        sortedByValue: true
       };
     case SORT_BY_NAME:
       let sortedGameName = { ...action.game };
@@ -271,9 +299,7 @@ const games = (state = initalState, action) => {
 };
 
 const sortUsersByName = users => {
-  users.sort((user1, user2) =>
-    user1.username.localeCompare(user2.username)
-  );
+  users.sort((user1, user2) => user1.username.localeCompare(user2.username));
   return users;
 };
 
@@ -319,12 +345,11 @@ const mapGameToUsers = (game, sortedByName, sortedByValue) => {
     user["username"] = game.members[i];
 
     users.push(user);
-
   }
   if (sortedByName) {
-    users = sortUsersByName(users)
-  }else if (sortedByValue) {
-    users = sortUsersByValue(users)
+    users = sortUsersByName(users);
+  } else if (sortedByValue) {
+    users = sortUsersByValue(users);
   }
 
   return users;
