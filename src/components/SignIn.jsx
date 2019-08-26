@@ -13,7 +13,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import { Redirect, Link } from "react-router-dom";
 import PasswordInput from "./PasswordInput";
 import Grid from "@material-ui/core/Grid";
-import ForgotPasswordDialog from "../containers/ForgotPasswordDialog"
+import ForgotPasswordDialog from "../containers/ForgotPasswordDialog";
 
 const styles = theme => ({
   main: {
@@ -49,11 +49,12 @@ const styles = theme => ({
   caption: {
     marginTop: theme.spacing.unit * 3
   },
-  buttonSignIn: {
-    marginLeft: 0
-  },
   secondaryControls: {
     marginTop: theme.spacing.unit
+  },
+  buttonLink: {
+    display: "block",
+    textAlign: "center"
   }
 });
 
@@ -153,14 +154,16 @@ class SignIn extends React.Component {
                   component={Link}
                   variant="outlined"
                   to="/sign-up"
-                  className={classes.buttonSignIn}
+                  fullWidth={true}
+                  className={classes.buttonLink}
                 >
-                  Create Accout
+                  Create Account
                 </Button>
               </Grid>
               <Grid item xs>
                 <Button
                   onClick={this.handleForgotPassword.bind(this)}
+                  fullWidth={true}
                 >
                   Forgot password
                 </Button>
@@ -169,8 +172,8 @@ class SignIn extends React.Component {
           </form>
         </Paper>
         <ForgotPasswordDialog
-         open={this.state.forgotPasswordDialog}
-         handleClose={this.handleForgotPassword.bind(this)}
+          open={this.state.forgotPasswordDialog}
+          handleClose={this.handleForgotPassword.bind(this)}
         />
       </main>
     );
