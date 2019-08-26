@@ -33,7 +33,7 @@ import {
   FETCH_CHANGE_MAIL_SUCCESS,
   FETCH_CHANGE_MAIL_ERROR,
   SORT_BY_MONEY,
-  SORT_BY_NAME,
+  SORT_BY_NAME
 } from "../actions";
 
 const initalState = {
@@ -41,7 +41,9 @@ const initalState = {
   games: [],
   game: {},
   errorMessage: "",
-  loading: false
+  loading: false,
+  sortedByValue: true,
+  sortedByName: false,
 };
 
 const games = (state = initalState, action) => {
@@ -72,8 +74,7 @@ const games = (state = initalState, action) => {
 
     case FETCH_GAME_SUCCESS:
       let game = action.game;
-      game["users"] = mapGameToUsers(game);
-      game = sortUsersByName(game)
+      game["users"] = mapGameToUsers(game, state.sortedByName, state.sortedByValue);
       return {
         ...state,
         loading: false,
@@ -154,7 +155,7 @@ const games = (state = initalState, action) => {
       };
     case FETCH_ADD_CATEGORY_GAME_SUCCESS:
       let gameCategoryAdd = action.game;
-      gameCategoryAdd["users"] = mapGameToUsers(gameCategoryAdd);
+      gameCategoryAdd["users"] = mapGameToUsers(gameCategoryAdd, state.sortedByName, state.sortedByValue);
       return {
         ...state,
         loading: false,
@@ -173,7 +174,7 @@ const games = (state = initalState, action) => {
       };
     case FETCH_REMOVE_CATEGORY_GAME_SUCCESS:
       let gameCategoryRemove = action.game;
-      gameCategoryRemove["users"] = mapGameToUsers(gameCategoryRemove);
+      gameCategoryRemove["users"] = mapGameToUsers(gameCategoryRemove, state.sortedByName, state.sortedByValue);
       return {
         ...state,
         loading: false,
@@ -187,21 +188,20 @@ const games = (state = initalState, action) => {
       };
     case FETCH_INCREMENT_BEGIN:
       let gameIncrement = action.game;
-      gameIncrement["users"] = mapGameToUsers(gameIncrement);
+      gameIncrement["users"] = mapGameToUsers(gameIncrement, state.sortedByName, state.sortedByValue);
       return {
         ...state,
         loading: true,
         game: gameIncrement
       };
     case FETCH_INCREMENT_SUCCESS:
-      
       return {
         ...state,
-        loading: false,
+        loading: false
       };
     case FETCH_INCREMENT_ERROR:
       let gameReset = action.game;
-      gameReset["users"] = mapGameToUsers(gameReset);
+      gameReset["users"] = mapGameToUsers(gameReset, state.sortedByName, state.sortedByValue);
       return {
         ...state,
         loading: false,
@@ -215,7 +215,7 @@ const games = (state = initalState, action) => {
       };
     case FETCH_DECREMENT_SUCCESS:
       let gameDecrement = action.game;
-      gameDecrement["users"] = mapGameToUsers(gameDecrement);
+      gameDecrement["users"] = mapGameToUsers(gameDecrement, state.sortedByName, state.sortedByValue);
       return {
         ...state,
         loading: false,
@@ -234,75 +234,78 @@ const games = (state = initalState, action) => {
         game: {},
         errorMessage: ""
       };
-    case CLOSE_ERROR_MESSAGE: 
+    case CLOSE_ERROR_MESSAGE:
       return {
         ...state,
         errorMessage: ""
       };
-    case FETCH_CHANGE_MAIL_ERROR: 
+    case FETCH_CHANGE_MAIL_ERROR:
       return {
         ...state,
         errorMessage: action.message
-      }
+      };
     case FETCH_CHANGE_MAIL_SUCCESS:
       return {
         ...state,
         errorMessage: "Success"
-      }
+      };
     case SORT_BY_MONEY:
-    let sortedGameMoney = {...action.game}
-    game = sortUsersByMoney(sortedGameMoney)
+      let sortedGameMoney = { ...action.game };
+      sortedGameMoney["users"] = sortUsersByValue(sortedGameMoney.users);
       return {
         ...state,
-        game: sortedGameMoney
-      }
+        game: sortedGameMoney,
+        sortedByName: false,
+        sortedByValue: true,
+      };
     case SORT_BY_NAME:
-      let sortedGameName = {...action.game}
-      game = sortUsersByName(sortedGameName)
+      let sortedGameName = { ...action.game };
+      sortedGameName["users"] = sortUsersByName(sortedGameName.users);
       return {
         ...state,
         game: sortedGameName
-      }
+      };
     default:
       return state;
   }
 };
 
-const sortUsersByName = game => {
-  game.users.sort((user1, user2) => user1.username.localeCompare(user2.username))
-  return game;
-} 
+const sortUsersByName = users => {
+  users.sort((user1, user2) =>
+    user1.username.localeCompare(user2.username)
+  );
+  return users;
+};
 
-const sortUsersByMoney = game => {
-  game.users.sort((user1, user2) => {
+const sortUsersByValue = users => {
+  users.sort((user1, user2) => {
     let valueUser1 = 0;
 
     for (const key in user1) {
       if (key === "username") {
         continue;
       }
-      
-      valueUser1 += user1[key];
-    } 
-    
-    let valueUser2 = 0;
 
+      valueUser1 += user1[key];
+    }
+
+    let valueUser2 = 0;
 
     for (const key in user2) {
       if (key === "username") {
         continue;
       }
-      
+
       valueUser2 += user2[key];
     }
 
     return (valueUser1 - valueUser2) * -1;
-  })
+  });
 
-  return game;
-} 
+  return users;
+};
 
-const mapGameToUsers = game => {
+const mapGameToUsers = (game, sortedByName, sortedByValue) => {
   let users = [];
 
   for (let i = 0; i < game.members.length; i++) {
@@ -316,7 +319,14 @@ const mapGameToUsers = game => {
     user["username"] = game.members[i];
 
     users.push(user);
+
   }
+  if (sortedByName) {
+    users = sortUsersByName(users)
+  }else if (sortedByValue) {
+    users = sortUsersByValue(users)
+  }
+
   return users;
 };
 
